@@ -18,6 +18,21 @@ export default class TaskRepository {
     });
   }
 
+  async toggleCompleted(id: number): Promise<Task> {
+    const existingTask = await this.prisma.task.findUnique({
+      where: { id },
+    });
+
+    if (!existingTask) {
+      throw new BadRequestException('Task not found');
+    }
+
+    return this.prisma.task.update({
+      where: { id },
+      data: { completed: !existingTask.completed },
+    });
+  }
+
   async save(
     data: Prisma.TaskCreateInput | { id: number; name: string },
   ): Promise<Task> {
@@ -43,7 +58,7 @@ export default class TaskRepository {
       }
 
       return await this.prisma.task.create({
-        data: { name: data.name },
+        data: { name: data.name, completed: false },
       });
     } catch (error) {
       throw new Error(`Database operation failed: ${error.message}`);

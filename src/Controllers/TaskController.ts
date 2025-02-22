@@ -12,6 +12,7 @@ import GetAllTasksUseCase from '../UseCase/GetAllTasks/GetAllTasksUseCase';
 import SaveTaskDto from '../UseCase/SaveTask/SaveTaskDto';
 import UseCaseFactory from '../UseCase/UseCaseFactory';
 import SaveTaskUseCase from '../UseCase/SaveTask/SaveTaskUseCase';
+import ToggleTaskUseCase from '../UseCase/ToggleTasks/ToggleTaskUseCase';
 
 @Controller()
 export default class TaskController {
@@ -31,6 +32,13 @@ export default class TaskController {
   async update(@Param('id') id: string, @Body() dto: SaveTaskDto) {
     dto.id = Number(id);
     return (await this.useCaseFactory.create(SaveTaskUseCase)).handle(dto);
+  }
+
+  @Patch('/tasks/:id/toggle')
+  async toggleCompleted(@Param('id') id: string) {
+    return (await this.useCaseFactory.create(ToggleTaskUseCase)).handle(
+      Number(id),
+    );
   }
 
   @Delete('/tasks/:id')
