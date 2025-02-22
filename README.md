@@ -1,30 +1,35 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## 📌 Implémentation de la création d’une tâche (POST /tasks)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# 🎯 Le but 
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+L’endpoint POST /tasks permet de créer une nouvelle tâche en envoyant un name dans le corps de la requête.
+L’API valide les données et les enregistre directement dans la base de données MySQL via Prisma.
 
-## Description
+# 📌 Ce que j'ai modifié 
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Fichier : -> TaskController.ts qui gère la requêtte HTTP et appelle la logique métier
+          -> SaveTaskUseCase.ts pour vérifier les données et appelle aussi la repository
+          -> TaskRepository.ts, celui-ci communique avec la base de données via Prisma
+          -> UseCaseFactory.ts génère les UseCases
+
+# 🚀 Explication de l'implémentation
+
+-> TaskController.ts : Ajout d'une ligne pour faire l'appelle à SaveTaskUseCase via UseCaseFactory
+-> SaveTaskUseCase.ts : Vérifie si name est présent avant de sauvegarder la tâche et appelle TaskRepository pour l'enregister dans la base de donnée
+-> UseCaseFactory : Ajout du SaveTaskUseCase dans la factory pour pouvoir l'utiliser d'une manière dynamique
+
+# Test avec le Postman 
+
+Méthode : POST
+URL : http://localhost:3000/tasks
+
+![image](https://github.com/user-attachments/assets/7e2ad7c2-fcc0-49dc-b43b-66d943f8e9b1)
+
+![image](https://github.com/user-attachments/assets/1df9a20c-f130-45ef-80a9-1a6f8f9ebf90)
+
+![image](https://github.com/user-attachments/assets/31a8d36d-98b4-4cb9-be83-578552894bc8)
+
+![image](https://github.com/user-attachments/assets/bca9d34f-5540-4fdb-a8a3-60bb8387b061)
 
 ## Installation
 
