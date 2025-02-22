@@ -59,6 +59,26 @@ J'ai modifié la tâche avec un id 1
 
 ![image](https://github.com/user-attachments/assets/abbb0c21-8dd1-472c-bc5b-7d8179557262)
 
+# 📌 Bonus : Implémentation du Toggle pour marquer les tâches comme complétées 
+
+## 🎯 Le but 
+
+Ce bonus ajoute une nouvelle fonctionnalité permettant de marquer les tâches comme complétées ou non complétées via un bouton dédié. Lorsqu'une tâche est complétée, elle est visuellement différenciée (ex. texte barré ou changement de couleur) pour améliorer l'expérience utilisateur.
+
+## 📌 Ce que j'ai modifié
+
+-> Ajout d'un champ completed dans la table Task via Prisma.
+
+![image](https://github.com/user-attachments/assets/4c32fc50-d2cf-4768-a7e2-b46963ea641f)
+
+Migration appliquée avec :
+
+```bash
+yarn prisma migrate dev --name add_completed_field
+```
+
+-> Ajout de la méthode toggleCompleted dans TaskRepository.ts pour modifier l'état completed d'une tâche.
+-> Ajout de ToggleTaskUseCase.ts pour gérer l'inversion de l'état d'une tâche.
 
 ## Installation
 
