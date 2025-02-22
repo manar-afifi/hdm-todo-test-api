@@ -1,24 +1,24 @@
-## 📌 Implémentation de la création d’une tâche (POST /tasks)
+# 📌 Backend : Implémentation de la création d’une tâche (POST /tasks)
 
-# 🎯 Le but 
+## 🎯 Le but 
 
 L’endpoint POST /tasks permet de créer une nouvelle tâche en envoyant un name dans le corps de la requête.
 L’API valide les données et les enregistre directement dans la base de données MySQL via Prisma.
 
-# 📌 Ce que j'ai modifié 
+## 📌 Ce que j'ai modifié 
 
 Fichier : -> TaskController.ts qui gère la requêtte HTTP et appelle la logique métier
           -> SaveTaskUseCase.ts pour vérifier les données et appelle aussi la repository
           -> TaskRepository.ts, celui-ci communique avec la base de données via Prisma
           -> UseCaseFactory.ts génère les UseCases
 
-# 🚀 Explication de l'implémentation
+## 🚀 Explication de l'implémentation
 
 -> TaskController.ts : Ajout d'une ligne pour faire l'appelle à SaveTaskUseCase via UseCaseFactory
 -> SaveTaskUseCase.ts : Vérifie si name est présent avant de sauvegarder la tâche et appelle TaskRepository pour l'enregister dans la base de donnée
 -> UseCaseFactory : Ajout du SaveTaskUseCase dans la factory pour pouvoir l'utiliser d'une manière dynamique
 
-# Test avec le Postman 
+## Test avec le Postman 
 
 Méthode : POST
 URL : http://localhost:3000/tasks
@@ -30,6 +30,35 @@ URL : http://localhost:3000/tasks
 ![image](https://github.com/user-attachments/assets/31a8d36d-98b4-4cb9-be83-578552894bc8)
 
 ![image](https://github.com/user-attachments/assets/bca9d34f-5540-4fdb-a8a3-60bb8387b061)
+
+# 📌 Backend : Implémentation de la modification (mise à jour) d’une tâche (PATCH /tasks)
+
+## 🎯 Objectif
+
+-> Modifier une tâche par son ID.
+-> Vérifier que la tâche existe avant de la modifier.
+-> Empêcher la modification si le nom est manquant.
+-> Retourner une erreur 404 si la tâche n'existe pas.
+
+## 🚀 Explication de l'implémentation
+
+-> TaskController.ts : @Param('id') id: string, pour récuperer l'id depuis l'url 
+dto.id = Number(id) et cela convertit l'id en un nombre, il fait l'apelle par la suite pour enregistrer les modifs
+-> SaveTaskUseCase.ts : Vérifie Vérifie si name est vide, sinon lève une erreur 400, si id est identifié, la tâche est mise à jour et appelle TaskRepository pour l'enregister dans la base de donnée
+
+## Test avec le Postman 
+
+Méthode : PATCH
+URL : http://localhost:3000/tasks/id
+
+J'ai modifié la tâche avec un id 1 
+
+![image](https://github.com/user-attachments/assets/6456c4cb-5f35-4f13-9bf8-a9e20df396d5)
+
+![image](https://github.com/user-attachments/assets/42bf1631-5806-40b7-90fe-439bd936425c)
+
+![image](https://github.com/user-attachments/assets/abbb0c21-8dd1-472c-bc5b-7d8179557262)
+
 
 ## Installation
 
