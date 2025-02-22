@@ -19,7 +19,7 @@ export default class TaskRepository {
   }
 
   async save(
-    data: Prisma.TaskCreateInput | { id: number; name: string }
+    data: Prisma.TaskCreateInput | { id: number; name: string },
   ): Promise<Task> {
     try {
       if (!data.name) {
@@ -27,6 +27,14 @@ export default class TaskRepository {
       }
 
       if ('id' in data && data.id) {
+        const existingTask = await this.prisma.task.findUnique({
+          where: { id: data.id },
+        });
+
+        if (!existingTask) {
+          throw new BadRequestException('Task not found');
+        }
+
         const { id, ...updateData } = data;
         return await this.prisma.task.update({
           where: { id },
