@@ -1,16 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../PrismaService';
-import { Prisma } from '@prisma/client';
+import { Prisma, Task } from '@prisma/client';
 
 @Injectable()
 export default class TaskRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll() {
+  async findAll(): Promise<Task[]> {
     return this.prisma.task.findMany();
   }
 
-  async delete(id: number) {
+  async delete(id: number): Promise<Task> {
     return this.prisma.task.delete({
       where: {
         id,
@@ -19,14 +19,26 @@ export default class TaskRepository {
   }
 
   async save(
-    data:
-      | Prisma.XOR<Prisma.TaskCreateInput, Prisma.TaskUncheckedCreateInput>
-      | Prisma.XOR<Prisma.TaskUpdateInput, Prisma.TaskUncheckedUpdateInput>,
-  ) {
-    if (!data.id) {
-      // @todo IMPLEMENT HERE USING PRISMA API
-    }
+    data: Prisma.TaskCreateInput | { id: number; name: string }
+  ): Promise<Task> {
+    try {
+      if (!data.name) {
+        throw new BadRequestException('Task name is required');
+      }
 
-    // @todo IMPLEMENT HERE USING PRISMA API
+      if ('id' in data && data.id) {
+        const { id, ...updateData } = data;
+        return await this.prisma.task.update({
+          where: { id },
+          data: updateData,
+        });
+      }
+
+      return await this.prisma.task.create({
+        data: { name: data.name },
+      });
+    } catch (error) {
+      throw new Error(`Database operation failed: ${error.message}`);
+    }
   }
 }
